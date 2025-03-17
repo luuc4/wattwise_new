@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WattWise - Intelligentes Energiemanagement</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #00c389;
+      --secondary-color: #0073e6;
+      --dark-color: #1e293b;
+      --light-color: #f8f9fa;
+      --accent-color: #ffc107;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--dark-color);
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      transition: all 0.3s ease-in-out;
+    }
+
+    .navbar-scrolled {
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      background-color: #fff !important;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      padding: 10px 25px;
+      border-radius: 30px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #00a872;
+      border-color: #00a872;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 195, 137, 0.2);
+    }
+
+    .btn-outline-primary {
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+      padding: 10px 25px;
+      border-radius: 30px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 195, 137, 0.2);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4f1f9 100%);
+      padding: 120px 0 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0, 195, 137, 0.2) 0%, rgba(0, 115, 230, 0.2) 100%);
+      top: -100px;
+      right: -100px;
+      z-index: 0;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0, 115, 230, 0.2) 0%, rgba(0, 195, 137, 0.2) 100%);
+      bottom: -50px;
+      left: -50px;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .app-showcase {
+      transform: perspective(1000px) rotateY(-15deg) rotateX(5deg) rotateZ(-5deg);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      border-radius: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .app-showcase:hover {
+      transform: perspective(1000px) rotateY(-5deg) rotateX(2deg) rotateZ(-2deg);
+    }
+
+    .feature-card {
+      border-radius: 16px;
+      border: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, rgba(0, 195, 137, 0.15) 0%, rgba(0, 115, 230, 0.15) 100%);
+      color: var(--primary-color);
+    }
+
+    .how-it-works {
+      background-color: #f8f9fa;
+      padding: 100px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step-box {
+      text-align: center;
+      padding: 30px;
+      border-radius: 16px;
+      background-color: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      position: relative;
+      z-index: 1;
+      height: 100%;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .testimonial-section {
+      padding: 100px 0;
+      background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+    }
+
+    .testimonial-card {
+      background-color: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      margin: 20px 10px;
+      position: relative;
+    }
+
+    .testimonial-card::before {
+      content: "\f10d";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      position: absolute;
+      top: -15px;
+      left: 20px;
+      font-size: 30px;
+      color: var(--primary-color);
+      opacity: 0.2;
+    }
+
+    .user-info img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+
+    .download-section {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      padding: 100px 0;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .download-section::before {
+      content: "";
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      top: -200px;
+      right: -200px;
+    }
+
+    .download-section::after {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      bottom: -150px;
+      left: -150px;
+    }
+
+    .store-badge {
+      height: 50px;
+      margin: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .store-badge:hover {
+      transform: scale(1.05);
+    }
+
+    footer {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 80px 0 30px;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.7);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-color);
+      transform: translateX(5px);
+    }
+
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      margin-right: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+      background-color: var(--primary-color);
+      transform: translateY(-5px);
+    }
+
+    .copyright {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 30px;
+      margin-top: 50px;
+    }
+
+    .energy-savings {
+      font-size: 56px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .section-heading {
+      position: relative;
+      margin-bottom: 50px;
+      display: inline-block;
+    }
+
+    .section-heading::after {
+      content: "";
+      position: absolute;
+      height: 4px;
+      width: 60px;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      bottom: -10px;
+      left: 0;
+    }
+
+    .notification-demo {
+      background-color: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 15px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .notification-demo:hover {
+      transform: scale(1.03);
+    }
+
+    .notification-time {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 12px;
+      color: #6c757d;
+    }
+
+    .usage-chart {
+      position: relative;
+      height: 120px;
+      margin: 20px 0;
+    }
+
+    .chart-bar {
+      position: absolute;
+      bottom: 0;
+      width: 8%;
+      background: linear-gradient(to top, #e9ecef, #ced4da);
+      border-radius: 4px 4px 0 0;
+    }
+
+    .chart-bar.active {
+      background: linear-gradient(to top, var(--primary-color), #00a872);
+    }
+
+    .chart-bar:nth-child(1) { left: 0%; height: 40%; }
+    .chart-bar:nth-child(2) { left: 11%; height: 60%; }
+    .chart-bar:nth-child(3) { left: 22%; height: 75%; }
+    .chart-bar:nth-child(4) { left: 33%; height: 90%; }
+    .chart-bar:nth-child(5) { left: 44%; height: 65%; }
+    .chart-bar:nth-child(6) { left: 55%; height: 45%; }
+    .chart-bar:nth-child(7) { left: 66%; height: 30%; }
+    .chart-bar:nth-child(8) { left: 77%; height: 50%; }
+    .chart-bar:nth-child(9) { left: 88%; height: 70%; }
+
+    .chart-label {
+      position: absolute;
+      bottom: -25px;
+      transform: translateX(-50%);
+      font-size: 10px;
+      color: #6c757d;
+    }
+
+    .chart-label:nth-child(10) { left: 0%; }
+    .chart-label:nth-child(11) { left: 11%; }
+    .chart-label:nth-child(12) { left: 22%; }
+    .chart-label:nth-child(13) { left: 33%; }
+    .chart-label:nth-child(14) { left: 44%; }
+    .chart-label:nth-child(15) { left: 55%; }
+    .chart-label:nth-child(16) { left: 66%; }
+    .chart-label:nth-child(17) { left: 77%; }
+    .chart-label:nth-child(18) { left: 88%; }
+
+    @media (max-width: 991.98px) {
+      .hero {
+        padding: 80px 0;
+        text-align: center;
+      }
+
+      .app-showcase {
+        margin-top: 50px;
+        transform: none;
+      }
+
+      .app-showcase:hover {
+        transform: none;
+      }
+
+      .section-heading::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .section-heading {
+        display: block;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .how-it-works .col-md-4:not(:last-child) {
+        margin-bottom: 30px;
+      }
+
+      .feature-card {
+        margin-bottom: 30px;
+      }
+    }
+
+    /* Animation Keyframes */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+  </style>
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-transparent position-fixed w-100" style="z-index: 1000;">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <i class="fas fa-bolt me-2" style="color: var(--primary-color);"></i>
+      <span style="font-weight: 700;">Watt<span style="color: var(--primary-color);">Wise</span></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#features">Funktionen</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#how-it-works">Wie es funktioniert</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#testimonials">Erfahrungen</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#download">Download</a>
+        </li>
+        <li class="nav-item ms-lg-3">
+          <a class="btn btn-primary" href="#download">Jetzt starten</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+  <div class="container">
+    <div class="row align-items-center hero-content">
+      <div class="col-lg-6">
+        <h1 class="mb-4 fw-bold">Intelligent Energie sparen mit <span style="color: var(--primary-color);">WattWise</span></h1>
+        <p class="lead mb-4">Dein persönlicher Energie-Assistent, der dir hilft, Stromkosten zu reduzieren und die Umwelt zu schonen – smart, einfach und effektiv.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="#download" class="btn btn-primary">Kostenlos starten</a>
+          <a href="#how-it-works" class="btn btn-outline-primary">Mehr erfahren</a>
+        </div>
+        <div class="mt-4">
+          <p class="mb-2"><i class="fas fa-check-circle me-2" style="color: var(--primary-color);"></i> Durchschnittlich <span class="energy-savings">20%</span> Energieeinsparung</p>
+          <p class="mb-0"><i class="fas fa-check-circle me-2" style="color: var(--primary-color);"></i> Über 10.000 zufriedene Nutzer</p>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <img src="home.png" alt="WattWise App" class="img-fluid app-showcase">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 py-md-7" id="features">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Smarte Funktionen für dein Zuhause</h2>
+      <p class="lead text-muted">Entdecke, wie WattWise dir helfen kann, Energie zu sparen</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card p-4">
+          <div class="feature-icon">
+            <i class="fas fa-lightbulb"></i>
+          </div>
+          <h3 class="h5 fw-bold">Intelligente Verbrauchsanalyse</h3>
+          <p>Echtzeitdaten zeigen dir genau, wann und wo du am meisten Strom verbrauchst. So identifizierst du Einsparpotenziale sofort.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card p-4">
+          <div class="feature-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h3 class="h5 fw-bold">Peak-Zeit Erkennung</h3>
+          <p>Erhalte Benachrichtigungen, wenn Strompreise besonders hoch sind und verschiebe energieintensive Aktivitäten auf günstigere Zeiten.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card p-4">
+          <div class="feature-icon">
+            <i class="fas fa-bell"></i>
+          </div>
+          <h3 class="h5 fw-bold">Personalisierte Tipps</h3>
+          <p>WattWise lernt deine Gewohnheiten und gibt dir maßgeschneiderte Empfehlungen, um deinen Stromverbrauch zu optimieren.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card p-4">
+          <div class="feature-icon">
+            <i class="fas fa-sync-alt"></i>
+          </div>
+          <h3 class="h5 fw-bold">Automatische Routinen</h3>
+          <p>Stelle automatische Energie-Routinen ein, die deine Smart-Home-Geräte optimal und effizient steuern.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card p-4">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="h5 fw-bold">Fortschrittstracking</h3>
+          <p>Verfolge deine Einsparungen über Zeit und erhalte Motivationsberichte, die deinen Beitrag zum Umweltschutz hervorheben.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card p-4">
+          <div class="feature-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <h3 class="h5 fw-bold">Gamification</h3>
+          <p>Sammle Punkte für energiesparendes Verhalten und vergleiche dich mit Freunden oder der Nachbarschaft in Energie-Challenges.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Demo Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 order-lg-2">
+        <h2 class="section-heading">Echtzeitüberwachung deines Verbrauchs</h2>
+        <p class="mb-4">Mit WattWise behältst du stets den Überblick über deinen Stromverbrauch. Die App zeigt dir nicht nur, wie viel Energie du aktuell verbrauchst, sondern auch, wann die beste Zeit ist, um energieintensive Haushaltsgeräte zu nutzen.</p>
+
+        <div class="notification-demo">
+          <div class="notification-time">Vor 10 Minuten</div>
+          <h5 class="mb-2"><i class="fas fa-bolt me-2" style="color: var(--accent-color);"></i> Energiespartipp</h5>
+          <p class="mb-0">Jetzt ist ein guter Zeitpunkt, deine Waschmaschine zu starten! Die Strompreise sind aktuell besonders niedrig.</p>
+        </div>
+
+        <div class="notification-demo">
+          <div class="notification-time">Heute, 08:30</div>
+          <h5 class="mb-2"><i class="fas fa-exclamation-triangle me-2" style="color: #dc3545;"></i> Verbrauchsspitze erkannt</h5>
+          <p class="mb-0">Dein Stromverbrauch ist gerade besonders hoch. Prüfe, ob alle energieintensiven Geräte notwendig sind.</p>
+        </div>
+      </div>
+      <div class="col-lg-6 order-lg-1 mb-5 mb-lg-0">
+        <div class="card border-0 shadow-sm rounded-4">
+          <div class="card-body p-4">
+            <h5 class="card-title">Dein Tagesverbrauch</h5>
+            <p class="text-muted small">Heute, 18. März 2025</p>
+
+            <div class="usage-chart">
+              <div class="chart-bar"></div>
+              <div class="chart-bar"></div>
+              <div class="chart-bar"></div>
+              <div class="chart-bar active"></div>
+              <div class="chart-bar"></div>
+              <div class="chart-bar"></div>
+              <div class="chart-bar"></div>
+              <div class="chart-bar"></div>
+              <div class="chart-bar"></div>
+              <div class="chart-label">6:00</div>
+              <div class="chart-label">8:00</div>
+              <div class="chart-label">10:00</div>
+              <div class="chart-label">12:00</div>
+              <div class="chart-label">14:00</div>
+              <div class="chart-label">16:00</div>
+              <div class="chart-label">18:00</div>
+              <div class="chart-label">20:00</div>
+              <div class="chart-label">22:00</div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <div>
+                <h6 class="text-muted mb-1">Aktueller Verbrauch</h6>
+                <h4 class="mb-0 fw-bold">2,3 kWh</h4>
+              </div>
+              <div>
+                <h6 class="text-muted mb-1">Strompreis</h6>
+                <h4 class="mb-0 fw-bold" style="color: var(--primary-color);">Niedrig</h4>
+              </div>
+              <div>
+                <h6 class="text-muted mb-1">Ersparnis heute</h6>
+                <h4 class="mb-0 fw-bold">1,35 €</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works" id="how-it-works">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Wie WattWise funktioniert</h2>
+      <p class="lead text-muted">In wenigen Schritten zu deinem persönlichen Energiemanagement</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="step-box">
+          <div class="step-number">1</div>
+          <h3 class="h5 fw-bold">App installieren</h3>
+          <p>Lade die WattWise App herunter und verbinde sie mit deinem Smart Meter oder deinem Stromzähler über unser kostenloses Bridge-Gerät.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step-box">
+          <div class="step-number">2</div>
+          <h3 class="h5 fw-bold">Daten analysieren</h3>
+          <p>WattWise analysiert dein Verbrauchsverhalten und identifiziert Geräte, Gewohnheiten und Einsparpotenziale in deinem Haushalt.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step-box">
+          <div class="step-number">3</div>
+          <h3 class="h5 fw-bold">Energie sparen</h3>
+          <p>Erhalte personalisierte Tipps und Benachrichtigungen, wann der beste Zeitpunkt ist, um Energie zu verbrauchen oder zu sparen.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonial Section -->
+<section class="testimonial-section" id="testimonials">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Was unsere Nutzer sagen</h2>
+      <p class="lead text-muted">Tausende zufriedene Haushalte sparen bereits Energie mit WattWise</p>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="testimonial-card">
+          <p class="mb-4">"Seit ich WattWise nutze, habe ich meine Stromkosten um fast 25% reduziert. Die App zeigt mir genau, wann ich meine Waschmaschine oder den Geschirrspüler am besten laufen lassen sollte."</p>
+          <div class="d-flex align-items-center user-info">
+            <img src="/api/placeholder/60/60" alt="User Avatar">
+            <div>
+              <h5 class="mb-0">Sandra M.</h5>
+              <p class="mb-0 text-muted small">Nutzt WattWise seit 6 Monaten</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testimonial-card">
+          <p class="mb-4">"Als Familie mit drei Kindern ist unser Energieverbrauch recht hoch. WattWise hat uns geholfen, unnötige Verbraucher zu identifizieren und unsere Gewohnheiten anzupassen."</p>
+          <div class="d-flex align-items-center user-info">
+            <img src="/api/placeholder/60/60" alt="User Avatar">
+            <div>
+              <h5 class="mb-0">Thomas K.</h5>
+              <p class="mb-0 text-muted small">Nutzt WattWise seit 1 Jahr</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testimonial-card">
+          <p class="mb-4">"Die Echtzeit-Benachrichtigungen bei Verbrauchsspitzen und die personalisierten Spartipps sind wirklich hilfreich. Die App ist einfach zu bedienen und liefert wertvolle Erkenntnisse."</p>
+          <div class="d-flex align-items-center user-info">
+            <img src="/api/placeholder/60/60" alt="User Avatar">
+            <div>
+              <h5 class="mb-0">Julia B.</h5>
+              <p class="mb-0 text-muted small">Nutzt WattWise seit 8 Monaten</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Download Section -->
+<section class="download-section" id="download">
+  <div class="container position-relative" style="z-index:1">
+    <div class="row align-items-center">
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <h2 class="fw-bold">Starte jetzt mit WattWise</h2>
+        <p class="lead mb-4">Lade die App herunter und beginne heute noch, Energie und Geld zu sparen. Es war noch nie so einfach, deinen Stromverbrauch zu optimieren.</p>
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-check-circle me-3 fs-5"></i>
+            <span>Kostenlose Basisversion verfügbar</span>
+          </div>
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-check-circle me-3 fs-5"></i>
+            <span>Keine komplizierte Hardware erforderlich</span>
+          </div>
+          <div class="d-flex align-items-center">
+            <i class="fas fa-check-circle me-3 fs-5"></i>
+            <span>Kompatibel mit allen gängigen Smart Metern</span>
+          </div>
+        </div>
+        <div class="d-flex flex-wrap">
+          <img src="/api/placeholder/150/50" alt="App Store" class="store-badge">
+          <img src="/api/placeholder/150/50" alt="Google Play" class="store-badge">
+        </div>
+      </div>
+      <div class="col-lg-6 text-center">
+        <img src="/api/placeholder/300/600" alt="WattWise App Screenshots" class="img-fluid rounded-4 shadow pulse-animation">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 mb-5 mb-lg-0">
+        <a class="d-flex align-items-center mb-3" href="#" style="text-decoration: none; color: white;">
+          <i class="fas fa-bolt me-2" style="color: var(--primary-color);"></i>
+          <span style="font-weight: 700; font-size: 24px;">Watt<span style="color: var(--primary-color);">Wise</span></span>
+        </a>
+        <p class="mb-4">WattWise hilft dir, deinen Stromverbrauch zu optimieren und gleichzeitig die Umwelt zu schonen. Intelligent, einfach und effektiv.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 mb-5 mb-md-0">
+        <h5 class="fw-bold mb-4">Links</h5>
+        <div class="footer-links">
+          <a href="#features">Funktionen</a>
+          <a href="#how-it-works">Wie es funktioniert</a>
+          <a href="#testimonials">Erfahrungen</a>
+          <a href="#download">Download</a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 mb-5 mb-md-0">
+        <h5 class="fw-bold mb-4">Rechtliches</h5>
+        <div class="footer-links">
+          <a href="#">Datenschutz</a>
+          <a href="#">AGB</a>
+          <a href="#">Impressum</a>
+          <a href="#">Cookie-Richtlinie</a>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-4">
+        <h5 class="fw-bold mb-4">Newsletter</h5>
+        <p class="mb-4">Erhalte die neuesten Energiespartipps und Updates zu unseren Funktionen:</p>
+        <form>
+          <div class="input-group mb-3">
+            <input type="email" class="form-control" placeholder="Deine E-Mail-Adresse" aria-label="Email" aria-describedby="button-addon2" style="border-radius: 30px 0 0 30px;">
+            <button class="btn btn-primary" type="button" id="button-addon2" style="border-radius: 0 30px 30px 0;">Abonnieren</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="text-center copyright">
+      <p class="mb-0">© 2025 WattWise. Alle Rechte vorbehalten.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Navbar scroll effect
+  window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 50) {
+      navbar.classList.add('navbar-scrolled');
+    } else {
+      navbar.classList.remove('navbar-scrolled');
+    }
+  });
+
+  // Smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      document.querySelector(this.getAttribute('href')).scrollIntoView({
+        behavior: 'smooth'
+      });
+
+      // Close mobile menu when clicking on link
+      const navbarCollapse = document.querySelector('.navbar-collapse');
+      if (navbarCollapse.classList.contains('show')) {
+        navbarCollapse.classList.remove('show');
+      }
+    });
+  });
+</script>
+</body>
+</html>
