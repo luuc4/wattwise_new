@@ -763,7 +763,7 @@
         <div class="card border-0 shadow-lg rounded-4 p-4" style="background: rgba(255, 255, 255, 0.95);">
           <div class="card-body">
             <h4 class="text-dark mb-4 text-center">Für Beta-Phase anmelden</h4>
-            <form id="betaSignupForm" onsubmit="submitBetaForm(event)">
+            <form action="https://formspree.io/f/xqaypoal" method="POST">
               <div class="mb-3">
                 <label for="firstName" class="form-label text-dark">Vorname</label>
                 <input type="text" class="form-control" id="firstName" name="firstName" required>
@@ -801,10 +801,7 @@
               </button>
             </form>
             <div id="successMessage" class="alert alert-success mt-3" style="display: none;">
-              <i class="fas fa-check-circle me-2"></i>Vielen Dank! Du wirst benachrichtigt, sobald die Beta verfügbar ist.
-            </div>
-            <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;">
-              <i class="fas fa-exclamation-triangle me-2"></i>Es gab ein Problem bei der Anmeldung. Bitte versuche es erneut.
+              <i class="fas fa-check-circle me-2"></i>Vielen Dank! Du wirst per E-Mail benachrichtigt.
             </div>
           </div>
         </div>
@@ -851,10 +848,11 @@
       <div class="col-lg-4 col-md-4">
         <h5 class="fw-bold mb-4">Newsletter</h5>
         <p class="mb-4">Erhalte die neuesten Energiespartipps und Updates zu unseren Funktionen:</p>
-        <form>
+        <form action="https://formspree.io/f/xqaypoal" method="POST">
           <div class="input-group mb-3">
-            <input type="email" class="form-control" placeholder="Deine E-Mail-Adresse" aria-label="Email" aria-describedby="button-addon2" style="border-radius: 30px 0 0 30px;">
-            <button class="btn btn-primary" type="button" id="button-addon2" style="border-radius: 0 30px 30px 0;">Abonnieren</button>
+            <input type="email" class="form-control" name="email" placeholder="Deine E-Mail-Adresse" aria-label="Email" aria-describedby="button-addon2" style="border-radius: 30px 0 0 30px;" required>
+            <input type="hidden" name="newsletter" value="true">
+            <button class="btn btn-primary" type="submit" id="button-addon2" style="border-radius: 0 30px 30px 0;">Abonnieren</button>
           </div>
         </form>
       </div>
@@ -892,119 +890,9 @@
     localStorage.setItem('wattwise_clicks', JSON.stringify(clicks));
   }
 
-  // Form submission handler
-  async function submitBetaForm(event) {
-    event.preventDefault();
-    
-    const form = document.getElementById('betaSignupForm');
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-    
-    // Track form submission attempt
-    trackCTA('beta-form-submitted');
-    
-    // Disable submit button to prevent double submission
-    const submitButton = form.querySelector('button[type="submit"]');
-    const originalButtonText = submitButton.innerHTML;
-    submitButton.disabled = true;
-    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Wird gesendet...';
-    
-    try {
-      // Send to backend (with fallback for GitHub Pages)
-      const response = await fetch('submit-beta.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      });
-      
-      let result;
-      const contentType = response.headers.get('content-type');
-      
-      // Check if response is JSON (successful PHP execution)
-      if (contentType && contentType.includes('application/json')) {
-        result = await response.json();
-      } else {
-        // Likely raw PHP file returned (GitHub Pages doesn't execute PHP)
-        throw new Error('Backend not available - form data saved locally');
-      }
-      
-      if (result && result.success) {
-        // Store locally as backup
-        const signups = JSON.parse(localStorage.getItem('wattwise_signups') || '[]');
-        const newSignup = {
-          ...data,
-          timestamp: new Date().toISOString(),
-          id: Date.now().toString()
-        };
-        signups.push(newSignup);
-        localStorage.setItem('wattwise_signups', JSON.stringify(signups));
-        
-        // Google Analytics conversion tracking
-        if (typeof gtag !== 'undefined') {
-          gtag('event', 'conversion', {
-            event_category: 'Beta Signup',
-            event_label: 'completed',
-            value: 1
-          });
-        }
-        
-        // Show success message
-        document.getElementById('successMessage').style.display = 'block';
-        document.getElementById('errorMessage').style.display = 'none';
-        form.reset();
-        
-        // Track successful submission
-        trackCTA('beta-signup-success');
-        
-        console.log('Beta signup submitted successfully:', newSignup);
-      } else {
-        throw new Error(result.message || 'Server error');
-      }
-      
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      
-      // Always store locally when server submission fails
-      const signups = JSON.parse(localStorage.getItem('wattwise_signups') || '[]');
-      const newSignup = {
-        ...data,
-        timestamp: new Date().toISOString(),
-        id: Date.now().toString(),
-        status: 'offline'
-      };
-      signups.push(newSignup);
-      localStorage.setItem('wattwise_signups', JSON.stringify(signups));
-      
-      // Show success message even when backend fails (data is saved locally)
-      document.getElementById('successMessage').style.display = 'block';
-      document.getElementById('errorMessage').style.display = 'none';
-      form.reset();
-      
-      trackCTA('beta-signup-offline');
-      
-      console.log('Beta signup saved locally (backend unavailable):', newSignup);
-      
-    } finally {
-      // Re-enable submit button
-      submitButton.disabled = false;
-      submitButton.innerHTML = originalButtonText;
-    }
-  }
 
-  // Newsletter signup tracking (for footer)
-  function trackNewsletterSignup() {
-    trackCTA('newsletter-signup');
-    
-    if (typeof gtag !== 'undefined') {
-      gtag('event', 'conversion', {
-        event_category: 'Newsletter',
-        event_label: 'signup',
-        value: 1
-      });
-    }
-  }
+
+
 
   // Page view tracking
   function trackPageView() {
@@ -1094,30 +982,7 @@
     });
   });
 
-  // Update newsletter form to include tracking
-  document.addEventListener('DOMContentLoaded', function() {
-    const newsletterButton = document.getElementById('button-addon2');
-    if (newsletterButton) {
-      newsletterButton.addEventListener('click', function() {
-        trackNewsletterSignup();
-        // Here you would handle the newsletter signup
-        const emailInput = this.previousElementSibling;
-        if (emailInput && emailInput.value) {
-          // Store newsletter signup
-          const newsletters = JSON.parse(localStorage.getItem('wattwise_newsletters') || '[]');
-          newsletters.push({
-            email: emailInput.value,
-            timestamp: new Date().toISOString()
-          });
-          localStorage.setItem('wattwise_newsletters', JSON.stringify(newsletters));
-          
-          // Show feedback to user
-          alert('Vielen Dank für deine Anmeldung zum Newsletter!');
-          emailInput.value = '';
-        }
-      });
-    }
-  });
+
 </script>
 </body>
 </html>

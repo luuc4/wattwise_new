@@ -91,9 +91,9 @@
                                     <tr>
                                         <td colspan="6" class="text-center">
                                             <div class="alert alert-info mb-0">
-                                                <i class="fas fa-envelope me-2"></i>
-                                                Beta-Anmeldungen werden als E-Mail-Benachrichtigungen versendet.<br>
-                                                Prüfe dein E-Mail-Postfach für neue Anmeldungen.
+                                                <i class="fas fa-paper-plane me-2"></i>
+                                                Beta-Anmeldungen werden jetzt über Formspree verarbeitet.<br>
+                                                Prüfe dein Formspree-Dashboard für neue Anmeldungen: <a href="https://formspree.io/forms/xqaypoal" target="_blank">Formspree Dashboard öffnen</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -131,82 +131,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
-        function loadSignups() {
-            // Since we're using email notifications, show appropriate message
-            fetch('get-signups.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Show the message about email-based system
-                        const tbody = document.getElementById('signupsTable');
-                        tbody.innerHTML = `
-                            <tr>
-                                <td colspan="6" class="text-center">
-                                    <div class="alert alert-info mb-0">
-                                        <i class="fas fa-envelope me-2"></i>
-                                        ${data.message || 'Beta-Anmeldungen werden als E-Mail-Benachrichtigungen versendet.'}
-                                    </div>
-                                </td>
-                            </tr>
-                        `;
-                        
-                        // Reset stats since we don't have CSV data
-                        document.getElementById('totalSignups').textContent = '-';
-                        document.getElementById('todaySignups').textContent = '-';
-                        document.getElementById('weekSignups').textContent = '-';
-                        document.getElementById('newsletterSignups').textContent = '-';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading signups:', error);
-                    const tbody = document.getElementById('signupsTable');
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="6" class="text-center">
-                                <div class="alert alert-warning mb-0">
-                                    <i class="fas fa-exclamation-triangle me-2"></i>
-                                    E-Mail-System ist aktiv. Anmeldungen werden per E-Mail gesendet.
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                });
-        }
-
-        function displaySignups(signups) {
-            const tbody = document.getElementById('signupsTable');
-            
-            if (signups.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center">Keine Anmeldungen vorhanden</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = signups.map(signup => `
-                <tr>
-                    <td>${new Date(signup.timestamp).toLocaleDateString('de-DE')}</td>
-                    <td>${signup.firstName} ${signup.lastName}</td>
-                    <td>${signup.email}</td>
-                    <td>${signup.phone || '-'}</td>
-                    <td>${signup.newsletter ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-muted"></i>'}</td>
-                    <td><span class="badge bg-success">Gespeichert</span></td>
-                </tr>
-            `).join('');
-        }
-
-        function updateStats(signups) {
-            const today = new Date().toDateString();
-            const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-
-            const todaySignups = signups.filter(s => new Date(s.timestamp).toDateString() === today);
-            const weekSignups = signups.filter(s => new Date(s.timestamp) >= oneWeekAgo);
-            const newsletterSignups = signups.filter(s => s.newsletter);
-
-            document.getElementById('totalSignups').textContent = signups.length;
-            document.getElementById('todaySignups').textContent = todaySignups.length;
-            document.getElementById('weekSignups').textContent = weekSignups.length;
-            document.getElementById('newsletterSignups').textContent = newsletterSignups.length;
-        }
-
         function loadTrackingStats() {
             const clicks = JSON.parse(localStorage.getItem('wattwise_clicks') || '[]');
             const engagement = JSON.parse(localStorage.getItem('wattwise_engagement') || '[]');
@@ -250,8 +174,13 @@
         }
 
         function refreshData() {
-            loadSignups();
             loadTrackingStats();
+            
+            // Set stats to indicate Formspree usage
+            document.getElementById('totalSignups').textContent = '-';
+            document.getElementById('todaySignups').textContent = '-';
+            document.getElementById('weekSignups').textContent = '-';
+            document.getElementById('newsletterSignups').textContent = '-';
         }
 
         // Load data on page load
