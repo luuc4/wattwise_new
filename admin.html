@@ -128,13 +128,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
         function loadSignups() {
-            // Load from localStorage (client-side signups)
-            const localSignups = JSON.parse(localStorage.getItem('wattwise_signups') || '[]');
-            
-            // In a real implementation, you would fetch from your backend
-            // For now, we'll use localStorage data
-            displaySignups(localSignups);
-            updateStats(localSignups);
+            // Try to load from CSV file via a simple PHP script
+            fetch('get-signups.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displaySignups(data.signups);
+                        updateStats(data.signups);
+                    } else {
+                        // Fallback to localStorage if CSV can't be read
+                        const localSignups = JSON.parse(localStorage.getItem('wattwise_signups') || '[]');
+                        displaySignups(localSignups);
+                        updateStats(localSignups);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading signups:', error);
+                    // Fallback to localStorage
+                    const localSignups = JSON.parse(localStorage.getItem('wattwise_signups') || '[]');
+                    displaySignups(localSignups);
+                    updateStats(localSignups);
+                });
         }
 
         function displaySignups(signups) {
@@ -152,7 +166,7 @@
                     <td>${signup.email}</td>
                     <td>${signup.phone || '-'}</td>
                     <td>${signup.newsletter ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-muted"></i>'}</td>
-                    <td><span class="badge bg-${signup.status === 'offline' ? 'warning' : 'success'}">${signup.status === 'offline' ? 'Offline' : 'Gesendet'}</span></td>
+                    <td><span class="badge bg-success">Gespeichert</span></td>
                 </tr>
             `).join('');
         }
@@ -219,33 +233,11 @@
         }
 
         function exportCSV() {
-            const signups = JSON.parse(localStorage.getItem('wattwise_signups') || '[]');
-            
-            if (signups.length === 0) {
-                alert('Keine Daten zum Exportieren vorhanden');
-                return;
-            }
-
-            const headers = ['Datum', 'Vorname', 'Nachname', 'E-Mail', 'Telefon', 'Newsletter', 'Status'];
-            const csvContent = [
-                headers.join(','),
-                ...signups.map(signup => [
-                    new Date(signup.timestamp).toLocaleDateString('de-DE'),
-                    signup.firstName,
-                    signup.lastName,
-                    signup.email,
-                    signup.phone || '',
-                    signup.newsletter ? 'Ja' : 'Nein',
-                    signup.status === 'offline' ? 'Offline' : 'Gesendet'
-                ].join(','))
-            ].join('\n');
-
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            // First try to download the actual CSV file if available
             const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', `wattwise-beta-signups-${new Date().toISOString().split('T')[0]}.csv`);
-            link.style.visibility = 'hidden';
+            link.href = 'signups/beta-signups.csv';
+            link.download = `wattwise-beta-signups-${new Date().toISOString().split('T')[0]}.csv`;
+            link.style.display = 'none';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
