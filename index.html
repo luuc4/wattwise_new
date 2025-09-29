@@ -4,6 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WattWise - Intelligentes Energiemanagement</title>
+  
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    // Replace GA_MEASUREMENT_ID with your actual Google Analytics Measurement ID
+    gtag('config', 'GA_MEASUREMENT_ID');
+  </script>
+  
   <!-- Bootstrap CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
@@ -465,10 +476,10 @@
           <a class="nav-link" href="#testimonials">Erfahrungen</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#download">Download</a>
+          <a class="nav-link" href="#signup">Beta-Anmeldung</a>
         </li>
         <li class="nav-item ms-lg-3">
-          <a class="btn btn-primary" href="#download">Jetzt starten</a>
+          <a class="btn btn-primary" href="#signup" onclick="trackCTA('nav-signup')">Für Beta anmelden</a>
         </li>
       </ul>
     </div>
@@ -481,14 +492,14 @@
     <div class="row align-items-center hero-content">
       <div class="col-lg-6">
         <h1 class="mb-4 fw-bold">Intelligent Energie sparen mit <span style="color: var(--primary-color);">WattWise</span></h1>
-        <p class="lead mb-4">Dein persönlicher Energie-Assistent, der dir hilft, Stromkosten zu reduzieren und die Umwelt zu schonen – smart, einfach und effektiv.</p>
+        <p class="lead mb-4">Dein zukünftiger persönlicher Energie-Assistent. Wir entwickeln eine innovative Lösung, die dir hilft, Stromkosten zu reduzieren und die Umwelt zu schonen – smart, einfach und effektiv.</p>
         <div class="d-flex flex-wrap gap-2">
-          <a href="#download" class="btn btn-primary">Kostenlos starten</a>
-          <a href="#how-it-works" class="btn btn-outline-primary">Mehr erfahren</a>
+          <a href="#signup" class="btn btn-primary" onclick="trackCTA('hero-signup')">Für Beta anmelden</a>
+          <a href="#how-it-works" class="btn btn-outline-primary" onclick="trackCTA('hero-learn-more')">Mehr erfahren</a>
         </div>
         <div class="mt-4">
-          <p class="mb-2"><i class="fas fa-check-circle me-2" style="color: var(--primary-color);"></i> Durchschnittlich <span class="energy-savings">20%</span> Energieeinsparung</p>
-          <p class="mb-0"><i class="fas fa-check-circle me-2" style="color: var(--primary-color);"></i> Über 10.000 zufriedene Nutzer</p>
+          <p class="mb-2"><i class="fas fa-development me-2" style="color: var(--primary-color);"></i> <strong>In Entwicklung:</strong> Sei einer der ersten Beta-Tester</p>
+          <p class="mb-0"><i class="fas fa-envelope me-2" style="color: var(--primary-color);"></i> Erhalte Updates über unseren Fortschritt</p>
         </div>
       </div>
       <div class="col-lg-6">
@@ -643,22 +654,22 @@
       <div class="col-md-4">
         <div class="step-box">
           <div class="step-number">1</div>
-          <h3 class="h5 fw-bold">App installieren</h3>
-          <p>Lade die WattWise App herunter und verbinde sie mit deinem Smart Meter oder deinem Stromzähler über unser kostenloses Bridge-Gerät.</p>
+          <h3 class="h5 fw-bold">Beta-Tester werden</h3>
+          <p>Melde dich für unsere Beta-Phase an und erhalte exklusiven Zugang zu WattWise, sobald die erste Version verfügbar ist.</p>
         </div>
       </div>
       <div class="col-md-4">
         <div class="step-box">
           <div class="step-number">2</div>
-          <h3 class="h5 fw-bold">Daten analysieren</h3>
-          <p>WattWise analysiert dein Verbrauchsverhalten und identifiziert Geräte, Gewohnheiten und Einsparpotenziale in deinem Haushalt.</p>
+          <h3 class="h5 fw-bold">Entwicklung mitverfolgen</h3>
+          <p>Erhalte regelmäßige Updates über den Entwicklungsfortschritt und gib uns wertvolles Feedback für die perfekte Lösung.</p>
         </div>
       </div>
       <div class="col-md-4">
         <div class="step-box">
           <div class="step-number">3</div>
-          <h3 class="h5 fw-bold">Energie sparen</h3>
-          <p>Erhalte personalisierte Tipps und Benachrichtigungen, wann der beste Zeitpunkt ist, um Energie zu verbrauchen oder zu sparen.</p>
+          <h3 class="h5 fw-bold">Frühen Zugang erhalten</h3>
+          <p>Als Beta-Tester erhältst du als einer der ersten Zugang zur fertigen App und kannst sofort beginnen, Energie zu sparen.</p>
         </div>
       </div>
     </div>
@@ -713,34 +724,85 @@
   </div>
 </section>
 
-<!-- Download Section -->
-<section class="download-section" id="download">
+<!-- Beta Signup Section -->
+<section class="download-section" id="signup">
   <div class="container position-relative" style="z-index:1">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center mb-5">
+        <h2 class="fw-bold">Sei dabei, wenn WattWise startet!</h2>
+        <p class="lead mb-4">Wir entwickeln die Zukunft des Energiemanagements. Melde dich für unsere Beta-Phase an und erhalte exklusiven Zugang, sobald WattWise verfügbar ist.</p>
+      </div>
+    </div>
     <div class="row align-items-center">
       <div class="col-lg-6 mb-5 mb-lg-0">
-        <h2 class="fw-bold">Starte jetzt mit WattWise</h2>
-        <p class="lead mb-4">Lade die App herunter und beginne heute noch, Energie und Geld zu sparen. Es war noch nie so einfach, deinen Stromverbrauch zu optimieren.</p>
         <div class="mb-4">
           <div class="d-flex align-items-center mb-3">
-            <i class="fas fa-check-circle me-3 fs-5"></i>
-            <span>Kostenlose Basisversion verfügbar</span>
+            <i class="fas fa-rocket me-3 fs-5"></i>
+            <span>Früher Zugang zur Beta-Version</span>
           </div>
           <div class="d-flex align-items-center mb-3">
-            <i class="fas fa-check-circle me-3 fs-5"></i>
-            <span>Keine komplizierte Hardware erforderlich</span>
+            <i class="fas fa-gift me-3 fs-5"></i>
+            <span>Exklusive Funktionen für Beta-Tester</span>
+          </div>
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-heart me-3 fs-5"></i>
+            <span>Direkter Draht zum Entwicklungsteam</span>
           </div>
           <div class="d-flex align-items-center">
-            <i class="fas fa-check-circle me-3 fs-5"></i>
-            <span>Kompatibel mit allen gängigen Smart Metern</span>
+            <i class="fas fa-star me-3 fs-5"></i>
+            <span>Kostenlose Premium-Features während der Beta</span>
           </div>
         </div>
-        <div class="d-flex flex-wrap">
-          <img src="/api/placeholder/150/50" alt="App Store" class="store-badge">
-          <img src="/api/placeholder/150/50" alt="Google Play" class="store-badge">
-        </div>
       </div>
-      <div class="col-lg-6 text-center">
-        <img src="/api/placeholder/300/600" alt="WattWise App Screenshots" class="img-fluid rounded-4 shadow pulse-animation">
+      <div class="col-lg-6">
+        <div class="card border-0 shadow-lg rounded-4 p-4" style="background: rgba(255, 255, 255, 0.95);">
+          <div class="card-body">
+            <h4 class="text-dark mb-4 text-center">Für Beta-Phase anmelden</h4>
+            <form id="betaSignupForm" onsubmit="submitBetaForm(event)">
+              <div class="mb-3">
+                <label for="firstName" class="form-label text-dark">Vorname</label>
+                <input type="text" class="form-control" id="firstName" name="firstName" required>
+              </div>
+              <div class="mb-3">
+                <label for="lastName" class="form-label text-dark">Nachname</label>
+                <input type="text" class="form-control" id="lastName" name="lastName" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label text-dark">E-Mail-Adresse</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+              </div>
+              <div class="mb-3">
+                <label for="phone" class="form-label text-dark">Telefonnummer (optional)</label>
+                <input type="tel" class="form-control" id="phone" name="phone">
+              </div>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter" checked>
+                  <label class="form-check-label text-dark" for="newsletter">
+                    Ja, ich möchte Updates über die Entwicklung erhalten
+                  </label>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="privacy" name="privacy" required>
+                  <label class="form-check-label text-dark" for="privacy">
+                    Ich stimme der <a href="#" class="text-primary">Datenschutzerklärung</a> zu
+                  </label>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary w-100 btn-lg" onclick="trackCTA('beta-signup-submit')">
+                <i class="fas fa-rocket me-2"></i>Jetzt für Beta anmelden
+              </button>
+            </form>
+            <div id="successMessage" class="alert alert-success mt-3" style="display: none;">
+              <i class="fas fa-check-circle me-2"></i>Vielen Dank! Du wirst benachrichtigt, sobald die Beta verfügbar ist.
+            </div>
+            <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;">
+              <i class="fas fa-exclamation-triangle me-2"></i>Es gab ein Problem bei der Anmeldung. Bitte versuche es erneut.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -769,7 +831,7 @@
           <a href="#features">Funktionen</a>
           <a href="#how-it-works">Wie es funktioniert</a>
           <a href="#testimonials">Erfahrungen</a>
-          <a href="#download">Download</a>
+          <a href="#signup">Beta-Anmeldung</a>
         </div>
       </div>
       <div class="col-lg-2 col-md-4 mb-5 mb-md-0">
@@ -801,6 +863,185 @@
 <!-- Bootstrap Bundle with Popper -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 <script>
+  // Enhanced tracking functions
+  function trackCTA(actionName) {
+    // Google Analytics tracking
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'click', {
+        event_category: 'CTA',
+        event_label: actionName,
+        value: 1
+      });
+    }
+    
+    // Custom tracking for internal analytics
+    console.log('CTA clicked:', actionName, new Date().toISOString());
+    
+    // Store in localStorage for session tracking
+    const clicks = JSON.parse(localStorage.getItem('wattwise_clicks') || '[]');
+    clicks.push({
+      action: actionName,
+      timestamp: new Date().toISOString(),
+      url: window.location.href
+    });
+    localStorage.setItem('wattwise_clicks', JSON.stringify(clicks));
+  }
+
+  // Form submission handler
+  async function submitBetaForm(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('betaSignupForm');
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    
+    // Track form submission attempt
+    trackCTA('beta-form-submitted');
+    
+    // Disable submit button to prevent double submission
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.innerHTML;
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Wird gesendet...';
+    
+    try {
+      // Send to backend
+      const response = await fetch('submit-beta.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        // Store locally as backup
+        const signups = JSON.parse(localStorage.getItem('wattwise_signups') || '[]');
+        const newSignup = {
+          ...data,
+          timestamp: new Date().toISOString(),
+          id: Date.now().toString()
+        };
+        signups.push(newSignup);
+        localStorage.setItem('wattwise_signups', JSON.stringify(signups));
+        
+        // Google Analytics conversion tracking
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'conversion', {
+            event_category: 'Beta Signup',
+            event_label: 'completed',
+            value: 1
+          });
+        }
+        
+        // Show success message
+        document.getElementById('successMessage').style.display = 'block';
+        document.getElementById('errorMessage').style.display = 'none';
+        form.reset();
+        
+        // Track successful submission
+        trackCTA('beta-signup-success');
+        
+        console.log('Beta signup submitted successfully:', newSignup);
+      } else {
+        throw new Error(result.message || 'Server error');
+      }
+      
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      document.getElementById('errorMessage').style.display = 'block';
+      document.getElementById('successMessage').style.display = 'none';
+      trackCTA('beta-signup-error');
+      
+      // Store locally even if server submission failed
+      const signups = JSON.parse(localStorage.getItem('wattwise_signups') || '[]');
+      const newSignup = {
+        ...data,
+        timestamp: new Date().toISOString(),
+        id: Date.now().toString(),
+        status: 'offline'
+      };
+      signups.push(newSignup);
+      localStorage.setItem('wattwise_signups', JSON.stringify(signups));
+      
+    } finally {
+      // Re-enable submit button
+      submitButton.disabled = false;
+      submitButton.innerHTML = originalButtonText;
+    }
+  }
+
+  // Newsletter signup tracking (for footer)
+  function trackNewsletterSignup() {
+    trackCTA('newsletter-signup');
+    
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'conversion', {
+        event_category: 'Newsletter',
+        event_label: 'signup',
+        value: 1
+      });
+    }
+  }
+
+  // Page view tracking
+  function trackPageView() {
+    const startTime = Date.now();
+    
+    // Track page engagement
+    window.addEventListener('beforeunload', function() {
+      const timeOnPage = Date.now() - startTime;
+      
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'timing_complete', {
+          name: 'page_engagement',
+          value: timeOnPage
+        });
+      }
+      
+      // Store engagement data
+      const engagement = JSON.parse(localStorage.getItem('wattwise_engagement') || '[]');
+      engagement.push({
+        page: window.location.pathname,
+        timeOnPage: timeOnPage,
+        timestamp: new Date().toISOString()
+      });
+      localStorage.setItem('wattwise_engagement', JSON.stringify(engagement));
+    });
+  }
+
+  // Scroll tracking
+  function trackScrollDepth() {
+    let maxScrollDepth = 0;
+    
+    window.addEventListener('scroll', function() {
+      const scrollDepth = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+      
+      if (scrollDepth > maxScrollDepth) {
+        maxScrollDepth = scrollDepth;
+        
+        // Track milestone scroll depths
+        if (scrollDepth >= 25 && maxScrollDepth < 25) {
+          trackCTA('scroll-25');
+        } else if (scrollDepth >= 50 && maxScrollDepth < 50) {
+          trackCTA('scroll-50');
+        } else if (scrollDepth >= 75 && maxScrollDepth < 75) {
+          trackCTA('scroll-75');
+        } else if (scrollDepth >= 90 && maxScrollDepth < 90) {
+          trackCTA('scroll-90');
+        }
+      }
+    });
+  }
+
+  // Initialize tracking
+  document.addEventListener('DOMContentLoaded', function() {
+    trackPageView();
+    trackScrollDepth();
+  });
+
   // Navbar scroll effect
   window.addEventListener('scroll', function() {
     const navbar = document.querySelector('.navbar');
@@ -816,9 +1057,14 @@
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
 
-      document.querySelector(this.getAttribute('href')).scrollIntoView({
-        behavior: 'smooth'
-      });
+      const targetId = this.getAttribute('href');
+      const targetElement = document.querySelector(targetId);
+      
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
 
       // Close mobile menu when clicking on link
       const navbarCollapse = document.querySelector('.navbar-collapse');
@@ -826,6 +1072,31 @@
         navbarCollapse.classList.remove('show');
       }
     });
+  });
+
+  // Update newsletter form to include tracking
+  document.addEventListener('DOMContentLoaded', function() {
+    const newsletterButton = document.getElementById('button-addon2');
+    if (newsletterButton) {
+      newsletterButton.addEventListener('click', function() {
+        trackNewsletterSignup();
+        // Here you would handle the newsletter signup
+        const emailInput = this.previousElementSibling;
+        if (emailInput && emailInput.value) {
+          // Store newsletter signup
+          const newsletters = JSON.parse(localStorage.getItem('wattwise_newsletters') || '[]');
+          newsletters.push({
+            email: emailInput.value,
+            timestamp: new Date().toISOString()
+          });
+          localStorage.setItem('wattwise_newsletters', JSON.stringify(newsletters));
+          
+          // Show feedback to user
+          alert('Vielen Dank für deine Anmeldung zum Newsletter!');
+          emailInput.value = '';
+        }
+      });
+    }
   });
 </script>
 </body>

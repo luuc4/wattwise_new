@@ -1,0 +1,18 @@
+# Signup data (contains personal information)
+signups/
+*.csv
+
+# IDE files
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
