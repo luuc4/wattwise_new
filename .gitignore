@@ -2,6 +2,10 @@
 signups/
 *.csv
 
+# PHP dependencies
+vendor/
+composer.lock
+
 # IDE files
 .idea/
 .vscode/
