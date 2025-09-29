@@ -46,7 +46,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 // Email configuration - Replace with your Gmail SMTP settings
-$to_email = 'your-email@gmail.com'; // Replace with your email
+$to_email = 'wattwisevorarlberg@gmail.com'; // Replace with your email
 $subject = 'Neue Beta-Anmeldung für WattWise';
 
 // Email content
@@ -60,7 +60,7 @@ $message .= "Anmeldedatum: " . date('Y-m-d H:i:s') . "\n";
 $message .= "IP-Adresse: " . $_SERVER['REMOTE_ADDR'] . "\n";
 
 // Email headers
-$headers = "From: WattWise Beta <noreply@wattwise.com>\r\n";
+$headers = "From: WattWise Beta <wattwisevorarlberg@gmail.com>\r\n";
 $headers .= "Reply-To: $email\r\n";
 $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
