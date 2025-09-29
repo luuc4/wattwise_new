@@ -1,187 +1,138 @@
-# WattWise Beta Landing Page - Implementation Documentation
+# WattWise Beta Landing Page - Email Integration
 
-## Übersicht der Änderungen
+## Übersicht
 
-Diese Implementierung transformiert die ursprüngliche WattWise Landing Page von einer App-Download-Seite zu einer Beta-Tester-Anmeldungsseite mit umfassendem Tracking.
+Die WattWise Beta-Landing Page wurde umgestellt von CSV-Speicherung auf E-Mail-Benachrichtigungen. Jede Beta-Anmeldung wird automatisch als formatierte HTML-E-Mail an wattwisevorarlberg@gmail.com gesendet.
 
-## Implementierte Features
+## Email-Konfiguration
 
-### 1. Beta-Anmeldung System
-- **Vollständiges Anmeldeformular** mit Validierung
-- **Email-Backend** mit PHP für Gmail SMTP Integration
-- **Lokale Datenspeicherung** als Fallback
-- **Benutzerfreundliche Fehlerbehandlung**
+### Gmail SMTP Einstellungen
+- **E-Mail**: wattwisevorarlberg@gmail.com
+- **App-Passwort**: xave ohaw rmqp pwpk
+- **SMTP Server**: smtp.gmail.com
+- **Port**: 587 (TLS)
+- **Verschlüsselung**: STARTTLS
 
-### 2. Tracking & Analytics
-- **Google Analytics Integration** (GA4 kompatibel)
-- **CTA-Tracking** für alle wichtigen Buttons und Links
-- **Scroll-Depth Tracking** (25%, 50%, 75%, 90%)
-- **Verweildauer-Messung**
-- **Conversion-Tracking** für Anmeldungen
+### Implementierung
+- **Haupt-Handler**: `submit-beta.php` - verarbeitet Formulareingaben und sendet E-Mails
+- **Admin Dashboard**: `admin.html` - zeigt jetzt E-Mail-Status statt CSV-Daten
+- **Produktions-Config**: `email-config-production.php` - vollständige SMTP-Konfiguration
 
-### 3. Admin Dashboard
-- **Anmeldungs-Übersicht** mit Statistiken
-- **Tracking-Metriken** in Echtzeit
-- **CSV-Export** Funktionalität
-- **Engagement-Analyse**
+## Features
 
-### 4. Email-Integration
-- **PHP Backend** für Formular-Verarbeitung
-- **Gmail SMTP** Unterstützung
-- **CSV-Backup** aller Anmeldungen
-- **Automatische Bestätigungs-Emails**
+### E-Mail-Benachrichtigungen
+- ✅ Automatische E-Mail bei jeder Beta-Anmeldung
+- ✅ Formatierte HTML-E-Mails mit allen Benutzerdaten
+- ✅ Fallback auf PHP mail() wenn SMTP nicht verfügbar
+- ✅ Umfangreiche Fehlerbehandlung und Logging
 
-## Dateien
+### Entfernte Features
+- ❌ CSV-Datei-Speicherung
+- ❌ Lokale Datenbank
+- ❌ CSV-Export im Admin-Dashboard
 
-### Haupt-Dateien
-- `index.html` - Hauptseite (überarbeitet)
-- `submit-beta.php` - Backend für Formular-Verarbeitung
-- `admin.html` - Admin Dashboard
-- `.gitignore` - Schutz sensibler Daten
+## Datensicherheit
 
-### Tracking Features
-- Google Analytics GA4 Integration
-- Umfassendes Event-Tracking
-- Lokale Datenspeicherung für Analyse
-
-## Setup-Anweisungen
-
-### 1. Google Analytics Setup
-1. Ersetze `GA_MEASUREMENT_ID` in `index.html` mit deiner tatsächlichen Google Analytics Measurement ID
-2. Erstelle eine neue GA4 Property auf [analytics.google.com](https://analytics.google.com)
-
-### 2. Email-Konfiguration
-1. Öffne `submit-beta.php`
-2. Ersetze `your-email@gmail.com` mit deiner Gmail-Adresse
-3. Konfiguriere SMTP-Einstellungen für Gmail:
-   ```php
-   // Für erweiterte SMTP-Konfiguration verwende PHPMailer
-   // composer require phpmailer/phpmailer
-   ```
-
-### 3. Server-Anforderungen
-- PHP 7.4+ mit mail() Funktion
-- Schreibrechte für `/signups` Verzeichnis
-- Für Production: SSL-Zertifikat empfohlen
-
-## Tracking & Analytics
-
-### Automatisch getrackte Events:
-- **CTA Clicks**: Alle "Für Beta anmelden" Buttons
-- **Navigation Clicks**: Menü-Interaktionen
-- **Form Submissions**: Erfolgreiche und fehlgeschlagene Anmeldungen
-- **Scroll Depth**: 25%, 50%, 75%, 90% der Seite
-- **Page Engagement**: Verweildauer und Sitzungsdaten
-
-### Lokale Datenspeicherung:
-- `wattwise_signups`: Alle Beta-Anmeldungen
-- `wattwise_clicks`: CTA-Tracking-Daten
-- `wattwise_newsletters`: Newsletter-Anmeldungen
-- `wattwise_engagement`: Sitzungs- und Verweildauer-Daten
-
-## Sicherheit & Datenschutz
-
-### Implementierte Schutzmaßnahmen:
+### Eingebaute Sicherheit
 - Input-Validierung und -Sanitization
+- E-Mail-Format-Validierung
 - CSRF-Schutz durch Origin-Validierung
-- Lokale Datenspeicherung als Backup
-- `.gitignore` für sensible Daten
+- Keine lokale Datenspeicherung (DSGVO-konform)
 
-### DSGVO-Compliance:
-- Explizite Einverständniserklärung
-- Link zur Datenschutzerklärung
-- Opt-in für Newsletter
-- Transparente Datenverwendung
+## Deployment-Anweisungen
 
-## Admin Dashboard Features
+### 1. Server-Anforderungen
+- PHP 7.4+ mit mail() Funktion
+- Ausgehende Internetverbindung auf Port 587
+- OpenSSL-Erweiterung für TLS
 
-### Statistiken:
-- Gesamt-Anmeldungen
-- Tägliche Anmeldungen
-- Wöchentliche Anmeldungen
-- Newsletter-Anmeldungen
+### 2. Gmail App-Passwort Setup
+1. Google-Konto öffnen → Sicherheit
+2. 2-Faktor-Authentifizierung aktivieren
+3. App-Passwörter → Neues App-Passwort für "Mail"
+4. 16-stelliges Passwort verwenden: `xave ohaw rmqp pwpk`
 
-### Tracking-Daten:
-- CTA-Click-Verteilung
-- Engagement-Metriken
-- Durchschnittliche Verweildauer
-- Conversion-Rates
-
-### Export-Funktionen:
-- CSV-Export aller Anmeldungen
-- Tracking-Daten-Export
-- Automatische Timestamps
-
-## Technische Details
-
-### Frontend:
-- Bootstrap 5.3.2 für Responsive Design
-- Font Awesome 6.4.2 für Icons
-- Vanilla JavaScript für Tracking
-- CSS3 Animationen und Transitions
-
-### Backend:
-- PHP für Formular-Verarbeitung
-- JSON für API-Kommunikation
-- CSV für Daten-Backup
-- Mail() für Email-Versand
-
-### Analytics:
-- Google Analytics GA4
-- Custom Event-Tracking
-- LocalStorage für Client-side Tracking
-- Real-time Dashboard-Updates
-
-## Deployment
-
-### 1. Dateien hochladen:
+### 3. Produktions-Deployment
 ```bash
-# Alle Dateien auf Server hochladen
-# Sicherstellen, dass PHP aktiviert ist
-# Schreibrechte für /signups setzen
-chmod 755 signups/
+# Dateien hochladen
+scp *.php *.html your-server:/var/www/html/
+
+# Berechtigungen setzen
+chmod 644 *.php *.html
+chmod 755 .
+
+# PHP-Konfiguration prüfen
+php -m | grep openssl  # Muss vorhanden sein
 ```
 
-### 2. Konfiguration anpassen:
-- Google Analytics ID eintragen
-- Email-Adresse konfigurieren
-- Datenschutzerklärung verlinken
+### 4. Testen
+```bash
+# SMTP-Verbindung testen
+telnet smtp.gmail.com 587
 
-### 3. Testing:
-- Formular-Submission testen
-- Email-Versand überprüfen
-- Tracking-Funktionen validieren
-- Admin Dashboard testen
+# Formular testen
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"firstName":"Test","lastName":"User","email":"test@example.com"}' \
+  https://your-domain.com/submit-beta.php
+```
 
-## Support & Wartung
+## Überwachung
 
-### Regelmäßige Aufgaben:
-- CSV-Backups herunterladen
-- Analytics-Daten überprüfen
-- Spam-Anmeldungen filtern
-- Performance-Monitoring
+### Log-Überwachung
+- Erfolgreiche E-Mails: `Beta signup email sent: [email] -> wattwisevorarlberg@gmail.com`
+- Fehlgeschlagene E-Mails: `Email failed for beta signup: [email] -> wattwisevorarlberg@gmail.com`
+- SMTP-Fehler: `SMTP Error: [details]`
 
-### Monitoring:
-- Server-Logs überwachen
-- Email-Delivery-Rate prüfen
-- Conversion-Rates analysieren
-- User-Feedback sammeln
+### E-Mail-Überwachung
+- Prüfe Posteingang von wattwisevorarlberg@gmail.com
+- Überwache Spam-Ordner
+- Kontrolliere Gmail-Sendelimits (500 E-Mails/Tag)
 
-## Erweiterungsmöglichkeiten
+## Troubleshooting
 
-### Kurzfristig:
-- MailChimp/Newsletter-Tool Integration
-- Automatische Bestätigungs-Emails
-- A/B Testing für Formulare
-- Social Media Sharing
+### Häufige Probleme
+1. **E-Mails kommen nicht an**
+   - Prüfe App-Passwort
+   - Kontrolliere Server-Firewall (Port 587)
+   - Überprüfe PHP error_log
 
-### Langfristig:
-- User Dashboard für Beta-Tester
-- Progress-Updates System
-- Community Features
-- Beta-App Download Integration
+2. **SMTP-Authentifizierung fehlgeschlagen**
+   - 2-Faktor-Auth muss aktiviert sein
+   - Verwende App-Passwort, nicht reguläres Passwort
+   - Prüfe Gmail-Sicherheitseinstellungen
+
+3. **TLS/SSL-Fehler**
+   - OpenSSL-Extension installieren
+   - PHP-Version überprüfen
+   - Server-Zeit synchronisieren
+
+### Debug-Modus
+Für Debugging in `submit-beta.php` ändern:
+```php
+error_reporting(E_ALL);
+ini_set('display_errors', 1); // Nur für Debug!
+```
+
+## Sicherheitshinweise
+
+### Produktions-Sicherheit
+- App-Passwort sicher speichern
+- HTTPS verwenden
+- PHP error_log überwachen
+- Regelmäßige Sicherheitsupdates
+
+### Gmail-Limits
+- **Sende-Limit**: 500 E-Mails/Tag
+- **Rate-Limit**: ~100 E-Mails/Stunde
+- **Überwachung**: Google Admin Console
 
 ---
 
-*Implementiert: September 2025*
-*Letztes Update: 29.09.2025*
+## Änderungshistorie
+
+**29.09.2025**: 
+- ✅ CSV-Speicherung entfernt
+- ✅ Gmail SMTP Integration implementiert
+- ✅ E-Mail-Templates optimiert
+- ✅ Admin-Dashboard angepasst
+- ✅ Produktions-Konfiguration erstellt
