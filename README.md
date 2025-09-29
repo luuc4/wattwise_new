@@ -91,17 +91,24 @@ curl -X POST -H "Content-Type: application/json" \
 ## Troubleshooting
 
 ### Häufige Probleme
-1. **E-Mails kommen nicht an**
+
+1. **JSON Parse Error (GitHub Pages)**
+   - **Problem**: `SyntaxError: JSON.parse: unexpected character at line 1 column 1`
+   - **Ursache**: GitHub Pages kann keine PHP-Skripte ausführen
+   - **Lösung**: Automatische Fallback-Lösung implementiert - Daten werden lokal gespeichert
+   - **Status**: ✅ Behoben (Form funktioniert offline auf GitHub Pages)
+
+2. **E-Mails kommen nicht an**
    - Prüfe App-Passwort
    - Kontrolliere Server-Firewall (Port 587)
    - Überprüfe PHP error_log
 
-2. **SMTP-Authentifizierung fehlgeschlagen**
+3. **SMTP-Authentifizierung fehlgeschlagen**
    - 2-Faktor-Auth muss aktiviert sein
    - Verwende App-Passwort, nicht reguläres Passwort
    - Prüfe Gmail-Sicherheitseinstellungen
 
-3. **TLS/SSL-Fehler**
+4. **TLS/SSL-Fehler**
    - OpenSSL-Extension installieren
    - PHP-Version überprüfen
    - Server-Zeit synchronisieren
