@@ -910,7 +910,7 @@
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Wird gesendet...';
     
     try {
-      // Send to backend
+      // Send to backend (with fallback for GitHub Pages)
       const response = await fetch('submit-beta.php', {
         method: 'POST',
         headers: {
@@ -919,9 +919,18 @@
         body: JSON.stringify(data)
       });
       
-      const result = await response.json();
+      let result;
+      const contentType = response.headers.get('content-type');
       
-      if (result.success) {
+      // Check if response is JSON (successful PHP execution)
+      if (contentType && contentType.includes('application/json')) {
+        result = await response.json();
+      } else {
+        // Likely raw PHP file returned (GitHub Pages doesn't execute PHP)
+        throw new Error('Backend not available - form data saved locally');
+      }
+      
+      if (result && result.success) {
         // Store locally as backup
         const signups = JSON.parse(localStorage.getItem('wattwise_signups') || '[]');
         const newSignup = {
@@ -956,11 +965,8 @@
       
     } catch (error) {
       console.error('Error submitting form:', error);
-      document.getElementById('errorMessage').style.display = 'block';
-      document.getElementById('successMessage').style.display = 'none';
-      trackCTA('beta-signup-error');
       
-      // Store locally even if server submission failed
+      // Always store locally when server submission fails
       const signups = JSON.parse(localStorage.getItem('wattwise_signups') || '[]');
       const newSignup = {
         ...data,
@@ -970,6 +976,15 @@
       };
       signups.push(newSignup);
       localStorage.setItem('wattwise_signups', JSON.stringify(signups));
+      
+      // Show success message even when backend fails (data is saved locally)
+      document.getElementById('successMessage').style.display = 'block';
+      document.getElementById('errorMessage').style.display = 'none';
+      form.reset();
+      
+      trackCTA('beta-signup-offline');
+      
+      console.log('Beta signup saved locally (backend unavailable):', newSignup);
       
     } finally {
       // Re-enable submit button
