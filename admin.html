@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WattWise - Beta Anmeldungen</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        .admin-header {
+            background: linear-gradient(135deg, #00c389 0%, #0073e6 100%);
+            color: white;
+            padding: 2rem 0;
+        }
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00c389;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="container">
+            <h1><i class="fas fa-bolt me-2"></i>WattWise Beta Dashboard</h1>
+            <p class="mb-0">Übersicht der Beta-Anmeldungen und Statistiken</p>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stats-card text-center">
+                    <div class="stat-number" id="totalSignups">0</div>
+                    <div class="text-muted">Gesamt Anmeldungen</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card text-center">
+                    <div class="stat-number" id="todaySignups">0</div>
+                    <div class="text-muted">Heute</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card text-center">
+                    <div class="stat-number" id="weekSignups">0</div>
+                    <div class="text-muted">Diese Woche</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card text-center">
+                    <div class="stat-number" id="newsletterSignups">0</div>
+                    <div class="text-muted">Newsletter</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Beta-Anmeldungen</h5>
+                        <div>
+                            <button class="btn btn-primary btn-sm" onclick="exportCSV()">
+                                <i class="fas fa-download me-1"></i>CSV Export
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="refreshData()">
+                                <i class="fas fa-refresh me-1"></i>Aktualisieren
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Datum</th>
+                                        <th>Name</th>
+                                        <th>E-Mail</th>
+                                        <th>Telefon</th>
+                                        <th>Newsletter</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="signupsTable">
+                                    <tr>
+                                        <td colspan="6" class="text-center">Lade Daten...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Tracking Statistiken</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="trackingStats">Lade Tracking-Daten...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Engagement Metriken</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="engagementStats">Lade Engagement-Daten...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function loadSignups() {
+            // Load from localStorage (client-side signups)
+            const localSignups = JSON.parse(localStorage.getItem('wattwise_signups') || '[]');
+            
+            // In a real implementation, you would fetch from your backend
+            // For now, we'll use localStorage data
+            displaySignups(localSignups);
+            updateStats(localSignups);
+        }
+
+        function displaySignups(signups) {
+            const tbody = document.getElementById('signupsTable');
+            
+            if (signups.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center">Keine Anmeldungen vorhanden</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = signups.map(signup => `
+                <tr>
+                    <td>${new Date(signup.timestamp).toLocaleDateString('de-DE')}</td>
+                    <td>${signup.firstName} ${signup.lastName}</td>
+                    <td>${signup.email}</td>
+                    <td>${signup.phone || '-'}</td>
+                    <td>${signup.newsletter ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-muted"></i>'}</td>
+                    <td><span class="badge bg-${signup.status === 'offline' ? 'warning' : 'success'}">${signup.status === 'offline' ? 'Offline' : 'Gesendet'}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function updateStats(signups) {
+            const today = new Date().toDateString();
+            const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+            const todaySignups = signups.filter(s => new Date(s.timestamp).toDateString() === today);
+            const weekSignups = signups.filter(s => new Date(s.timestamp) >= oneWeekAgo);
+            const newsletterSignups = signups.filter(s => s.newsletter);
+
+            document.getElementById('totalSignups').textContent = signups.length;
+            document.getElementById('todaySignups').textContent = todaySignups.length;
+            document.getElementById('weekSignups').textContent = weekSignups.length;
+            document.getElementById('newsletterSignups').textContent = newsletterSignups.length;
+        }
+
+        function loadTrackingStats() {
+            const clicks = JSON.parse(localStorage.getItem('wattwise_clicks') || '[]');
+            const engagement = JSON.parse(localStorage.getItem('wattwise_engagement') || '[]');
+
+            // Display tracking stats
+            const trackingContainer = document.getElementById('trackingStats');
+            const clickCounts = {};
+            
+            clicks.forEach(click => {
+                clickCounts[click.action] = (clickCounts[click.action] || 0) + 1;
+            });
+
+            const trackingHTML = Object.entries(clickCounts).map(([action, count]) => 
+                `<div class="d-flex justify-content-between mb-2">
+                    <span>${action}</span>
+                    <span class="badge bg-primary">${count}</span>
+                </div>`
+            ).join('');
+
+            trackingContainer.innerHTML = trackingHTML || 'Keine Tracking-Daten verfügbar';
+
+            // Display engagement stats
+            const engagementContainer = document.getElementById('engagementStats');
+            if (engagement.length > 0) {
+                const avgTimeOnPage = engagement.reduce((sum, e) => sum + e.timeOnPage, 0) / engagement.length;
+                const avgTimeMinutes = Math.round(avgTimeOnPage / 1000 / 60 * 100) / 100;
+                
+                engagementContainer.innerHTML = `
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Seitenaufrufe</span>
+                        <span class="badge bg-info">${engagement.length}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Durchschnittliche Verweildauer</span>
+                        <span class="badge bg-success">${avgTimeMinutes} Min</span>
+                    </div>
+                `;
+            } else {
+                engagementContainer.innerHTML = 'Keine Engagement-Daten verfügbar';
+            }
+        }
+
+        function refreshData() {
+            loadSignups();
+            loadTrackingStats();
+        }
+
+        function exportCSV() {
+            const signups = JSON.parse(localStorage.getItem('wattwise_signups') || '[]');
+            
+            if (signups.length === 0) {
+                alert('Keine Daten zum Exportieren vorhanden');
+                return;
+            }
+
+            const headers = ['Datum', 'Vorname', 'Nachname', 'E-Mail', 'Telefon', 'Newsletter', 'Status'];
+            const csvContent = [
+                headers.join(','),
+                ...signups.map(signup => [
+                    new Date(signup.timestamp).toLocaleDateString('de-DE'),
+                    signup.firstName,
+                    signup.lastName,
+                    signup.email,
+                    signup.phone || '',
+                    signup.newsletter ? 'Ja' : 'Nein',
+                    signup.status === 'offline' ? 'Offline' : 'Gesendet'
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `wattwise-beta-signups-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshData();
+            
+            // Auto-refresh every 30 seconds
+            setInterval(refreshData, 30000);
+        });
+    </script>
+</body>
+</html>
